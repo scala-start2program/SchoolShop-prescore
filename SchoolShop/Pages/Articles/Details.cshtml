@@ -1,0 +1,76 @@
+﻿@page
+@model SchoolShop.Pages.Articles.DetailsModel
+
+@{
+    ViewData["Title"] = "Details artikel";
+    string imagePath = "~/images/" + (Model.Article.ImagePath ?? "noimage.jpg");
+    ViewData["Email"] = "";
+    ViewData["Loginstyle"] = "visibility: visible; ";
+    ViewData["Logoutstyle"] = "visibility: hidden; ";
+    ViewData["Configstyle"] = "visibility: hidden; ";
+    if (!string.IsNullOrEmpty(Model.Availability.Email))
+    {
+        ViewData["Email"] = Model.Availability.Email;
+        ViewData["BasketCount"] = Model.Availability.BasketCount;
+        ViewData["Loginstyle"] = "visibility: hidden; ";
+        ViewData["Logoutstyle"] = "visibility: visible; ";
+        if (Model.Availability.IsAdmin)
+        {
+            ViewData["Configstyle"] = "visibility: visible; ";
+        }
+    }
+}
+<h1>@Html.DisplayFor(model => model.Article.ArticleName)</h1>
+<h2>@Html.DisplayFor(model => model.Article.Brand.BrandName)</h2>
+<h2>@Html.DisplayFor(model => model.Article.Category.CategoryName)</h2>
+<hr />
+<div class="btn-group">
+    <a asp-page="./Details"
+       asp-route-id="@Model.PreviousId"
+       asp-route-brandid="@Model.BrandId"
+       asp-route-categoryid="@Model.CategoryId"
+       class="btn btn-light">&lt; Vorige</a>
+    <a asp-page="./Index"
+       asp-route-brandFilter="@Model.BrandId"
+       asp-route-categoryFilter="@Model.CategoryId"
+       class="btn btn-light">
+        Terug naar overzicht
+    </a>
+    <a asp-page="./Details"
+       asp-route-id="@Model.NextId"
+       asp-route-brandid="@Model.BrandId"
+       asp-route-categoryid="@Model.CategoryId"
+       class="btn btn-light">Volgende &gt;</a>
+</div>
+<hr />
+<div class="container-fluid">
+    <img class="imageThumbnail" src="@imagePath" asp-append-version="true" />
+</div>
+<hr />
+<div class="form-group row">
+    <span class="col-sm-2 col-form-label font-weight-bold">Prijs</span>
+    <div class="col-sm-10">
+        @Html.DisplayFor(model => model.Article.Price)
+    </div>
+</div>
+<div class="form-group row">
+    <span class="col-sm-2 col-form-label font-weight-bold">Omschrijving</span>
+    <div class="col-sm-10">
+        @Html.DisplayFor(model => model.Article.Description)
+    </div>
+</div>
+<div class="form-group row">
+    <span class="col-sm-2 col-form-label font-weight-bold">Score</span>
+    <div class="col-sm-10">
+        @Html.DisplayFor(model => model.Article.Score)
+    </div>
+</div>
+
+
+<div>
+    <div class="btn-group">
+        <a style="@Model.Availability.ConfigButtonStyle" asp-page="./Edit" asp-route-id="@Model.Article.Id" class="btn  btn-warning" title="Wijzigen">
+            <i class="fas fa-pencil-alt"></i>
+        </a>
+    </div>
+</div>
